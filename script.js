@@ -40,6 +40,7 @@ for (var i = 0 ; i < buttons.length; ++i) {
       setButtonColour(body, R, G, B);
     } else {
       answerMessage.innerHTML = "땡!";
+      setButtonColour(body, 255, 255, 255);
     }
   });
 }
