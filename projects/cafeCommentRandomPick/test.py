@@ -51,7 +51,6 @@ def get_comment_item(commentBlock):
 
 
 def main():
-    f = open("output.txt", "w")
     driver = Driver()
     driver.get(f"https://nid.naver.com/nidlogin.login?mode=form&url=https%3A%2F%2Fwww.naver.com")
     driver.login("borengdev", "aszx1245")
@@ -75,9 +74,7 @@ def main():
             ret = get_comment_item(temp)
             if ret:
                 print(ret[1])
-                f.write(ret[0] + " : " + ret[1][ret[0]]['comment'] + "\n")
 
-    f.close()
     import code
     code.interact(local=locals())
     return
