@@ -1,0 +1,72 @@
+<li class="CommentItem" id="96129713">
+    <div class="comment_area">
+        <a class="comment_thumb" href="https://cafe.naver.com/CafeMemberNetworkView.nhn?m=view&amp;clubid=14062859&amp;memberid=zksch9234"><img alt="프로필 사진" height="36" src="https://cafethumb.pstatic.net/MjAyMTAzMTNfMTYw/MDAxNjE1NjMxNDMwMTcw.pidU3FkQcpAGRtzorjwm-f_pD74C269ZSpDCsaQ9eA0g.6dnDDEJh-8Q_sGiWnhCaNLfRaXpQvzY7QtS58fuWmWwg.PNG/externalFile.png?type=c77_77" width="36"/>
+        </a>
+        <div class="comment_box">
+            <div class="comment_nick_box">
+                <div class="comment_nick_info">
+                    <a aria-expanded="false" aria-haspopup="true" class="comment_nickname" href="#" id="cih96129713" role="button">
+            샐리를 디즈니로
+        </a>
+        <!-- -->
+                </div>
+                <!-- -->
+            </div>
+            <div class="comment_text_box">
+                <p class="comment_text_view">
+                <!-- -->
+                <span class="text_comment">89 / 망고!
+                </span>
+                </p>
+                <!-- -->
+            </div>
+            <div class="comment_info_box">
+                <span class="comment_info_date">2021.04.05. 18:51</span>
+                <!-- -->
+            </div>
+            <div class="comment_tool" data-v-1fe2585c="">
+                <a class="comment_tool_button" data-v-1fe2585c="" href="#" id="commentItem96129713" role="button" title="더보기">
+                    <svg aria-hidden="true" class="svg-icon ico-post-more-979797" data-v-1fe2585c="">
+                        <use data-v-1fe2585c="" xlink:href="#ico-post-more-979797">
+                        </use>
+                    </svg>
+                </a>
+                <!-- -->
+            </div>
+        </div>
+    </div>
+</li>>
+
+
+작성자
+comment_nick_info.comment_nickname
+작성자 id
+comment_nick_info.id
+댓글
+text_comment
+날짜
+comment_info_date
+
+for k in soup.find_all('ul', {'class': 'comment_list'}):
+    for l in k.find_all('li'):
+        print(l.text)
+for k in soup.find_all('ul', {'class': 'comment_list'}):
+    for l in k.find_all('li'):
+        print(l.text)
+
+for i in a.find_all('li'):
+    for k in i.stripped_strings:
+        print(k)
+    print()
+for i in a:
+     temp = BeautifulSoup(str(i), "html.parser")
+     k = temp.find("div", {'class' : 'comment_nick_info'})
+     if k is not None:
+         print(k.a['id'])
+li0.find("a", {"class" : "comment_thumb"})["href"].split("&")[2].split("=")[1]
+
+for i in a:
+    temp = BeautifulSoup(str(i), "html.parser")
+    k = temp.find("a", {"class" : "comment_thumb"})
+    if k is not None:
+            print(k["href"].split("&")[2].split("=")[1])

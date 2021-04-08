@@ -1,0 +1,35 @@
+driver.driver.switch_to.frame('cafe_main')
+html = driver.driver.page_source
+soup = BeautifulSoup(html, 'html.parser')
+
+for k in soup.find_all('ul', {'class': 'comment_list'}):
+    for l in k.find_all('li'):
+        print(l.attrs)
+
+
+작성자
+print(temp.find("div", {'class' : 'comment_nick_info'}))
+comment_nick_info.comment_nickname
+작성자 id
+comment_nick_info.id
+댓글
+print(temp.find("span", {'class' : 'text_comment'}))
+text_comment
+날짜
+<span class="comment_info_date">2021.04.05. 18:13</span>
+comment_info_date
+
+
+𝟏 𝟐 𝟑 𝟒 𝟓 𝟔 𝟕 𝟖 𝟗 𝟎
+🏵
+🌸
+🌫
+CommentItem.comment_area.comment_thumb
+						.comment_box.comment_nick_box.comment_nick_info.comment_nickname
+									.comment_text_box.comment_text_view
+													 .text_comment
+									.comment_info_box.comment_info_date
+									.comment_tool.comment_tool_button
+									
+									
+app.Article.article_wrap.ArticleContentBox.article_container.CommentBox.ArticlePaginate									
