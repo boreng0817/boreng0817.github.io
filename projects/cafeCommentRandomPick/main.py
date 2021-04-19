@@ -1,9 +1,23 @@
 import time
 import math
 import random
+import emojis
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
+from selenium.webdriver.support.ui import WebDriverWait 
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.common.by import By
+
+# ===globalVariable===
+# 0. Constant 
+NAVER_LOGIN_PAGE = f"https://nid.naver.com/nidlogin.login?mode=form&url=https%3A%2F%2Fwww.naver.com"
+NAVER_USER_PAGE = f"https://cafe.naver.com/CafeMemberNetworkView.nhn?m=view&clubid=14062859&memberid=syeon7706#"
+DEV_ID = "borengdev"
+DEV_PASSWORD = "aszx1245"
+# ====================
+
 
 #
 # self.idList {USER_ID : index} 
@@ -13,27 +27,37 @@ from bs4 import BeautifulSoup
 #                              , "comment"  : COMMENT
 #                              , "time"     : TIME}}
 #
-# self.IsCommentCorresct { USER_ID : True/False }
+# self.IsCommentCorrect { USER_ID : True/False }
 #                                       
 class Driver:
     def __init__(self):
         # download right chrome driver with pc's chrome version
         self.driver = webdriver.Chrome(ChromeDriverManager().install())
-        self.url = self.getUrl()
+        self.articleNumber = "4039248"
         self.idList = {}
         self.commentList = {}
-        self.IsCommentCorresct = {}
+        self.IsCommentCorrect = {}
         self.idCount = 0
         self.pageNum = 1
         self.soup = None
         self.html = None
+        self.wait = None
+
+        self.login()
+        self.url = self.getUrl()
 
     def get(self, url=None):
         if url:
             self.driver.get(url)
         else:
             self.driver.get(self.url)
-        time.sleep(random.randrange(1,3))
+        try:
+            self.wait = WebDriverWait(self.driver, 3)
+            self.wait.until(
+             EC.presence_of_element_located((By.NAME, 'cafe_main'))
+                    )
+        except TimeoutException:
+            print("Timeout happened no page load")
 
     #
     # Find latest article's url for choosing winner 
@@ -44,8 +68,25 @@ class Driver:
     #  Format : aritcleNum  articleTitle
     #
     def getUrl(self):
-        return f"https://cafe.naver.com/ghdi58?iframe_url_utf8=%2FArticleRead.nhn%253Fclubid%3D14062859%2526page%3D1%2526boardtype%3DL%2526articleid%3D3988712%2526referrerAllArticles%3Dtrue"
+        self.get(NAVER_USER_PAGE) 
+        self.driver.switch_to.frame("cafe_main")
+        self.driver.switch_to.frame("innerNetwork")
+        # Implement finding appropriate article number
+        self.html = self.driver.page_source
+        self.soup = BeautifulSoup(self.html, 'html.parser')
+        
+        # Update self.articleNumber
+        # ====
+        #
+        # traverse through all buttons
+        #
+        # +===
+        for temp in self.soup.find_all("td", {"class" : "td_article"}):
+            self.articleNumber = get_article_number(temp)
+            if self.articleNumber:
+                break
 
+        return f"https://cafe.naver.com/ghdi58/%s"%self.articleNumber
     #
     # login with "user_id" and "password" to naver.com
     #  Implementation done
@@ -54,7 +95,7 @@ class Driver:
     #  2. This function waits exact real time
     #    -> which can cause performance issue
     #
-    def login(self, user_id, password):
+    def login(self, user_id = DEV_ID, password = DEV_PASSWORD):
         loginString = "document.getElementsByName(\'%s\')[0].value=\'%s\'"
         # wait until page is loaded
         self.get(NAVER_LOGIN_PAGE)
@@ -70,7 +111,12 @@ class Driver:
     # after move into new page
     #
     def loadPage(self):
+        cssSelector = "#app > div > div > div.ArticleContentBox > " +\
+                      "div.article_header > div.ArticleTool > " +\
+                      "a.button_comment > strong"
         self.driver.switch_to.frame("cafe_main")
+        self.wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 
+            cssSelector)))
         self.html = self.driver.page_source
         self.soup = BeautifulSoup(self.html, 'html.parser')
 
@@ -84,25 +130,43 @@ class Driver:
         self.pageNum = int(math.ceil(commentNum/100))
 
     #
-    # Naive approach for reading comment from article
-    # Make an dictionary {"userId" : True/False}
+    # Naive approach for reading comment from article 
     #  Adiitional implementation
     #  1. Classify duplicate user
     #    -> maybe use state or string for this
     #
 
     def readComment(self):
-        cssSelector = "#app > div > div > div.ArticleContentBox > " +\
-                      "div.article_container > div.CommentBox > "   +\
-                      "div.ArticlePaginate > button:nth-child(%d)"
-
+        cssSelectorButton = "#app > div > div > div.ArticleContentBox > " +\
+                            "div.article_container > div.CommentBox > "   +\
+                            "div.ArticlePaginate > button:nth-child(%d)"
+        cssSelectorUl = "#app > div > div > div.ArticleContentBox > " +\
+                        "div.article_container > div.CommentBox > ul"
         for i in range(1, self.pageNum + 1):
-            self.driver.find_element_by_css_selector(cssSelector%(i+1)).click()
-            time.sleep(1)
-            self.html = self.driver.page_source
-            self.soup = BeautifulSoup(self.html, "html.parser")
+            testBool = True #
+            #self.driver.find_element_by_css_selector(cssSelector%(i+1)).click()
+            self.wait = WebDriverWait(self.driver, 3)
+            try:
+                self.wait.until(EC.element_to_be_clickable(
+                (By.CSS_SELECTOR, cssSelectorButton%(i+1)))
+                ).click() 
+            except TimeoutException:
+                print("Time out exception")
+
+            # Check if UL is properly loaded
+            while True:
+                self.html = self.driver.page_source
+                self.soup = BeautifulSoup(self.html, "html.parser")
+                # User should be new to list
+                if self.testUl():
+                    break
+
             for temp in self.soup.find('ul', {'class' : 'comment_list'}):
                 ret = get_comment_item(temp)
+                if testBool:
+                    testBool = False
+                    print(ret)
+
                 # if temp tag is comment
                 # or user id is already in commentList
                 if (ret is None) or ret[0] in list(self.idList.values()):
@@ -113,13 +177,45 @@ class Driver:
                     self.commentList[ret[0]] = ret[1][ret[0]]
 
         return
-    
+
+    def testUl(self):
+        counter = 0
+        MAX_MATCH = 3
+        for temp in self.soup.find('ul', {'class' : 'comment_list'}):
+            ret = get_comment_item(temp)
+
+            if (ret is None):
+                continue
+            
+            if ret[0] in list(self.idList.values()):
+                counter += 1
+                continue
+            else:
+                return True
+            if counter == MAX_MATCH:
+                return False
+
     #
     # Get comment of id = name
     #
     def getComment(self, name):
         return self.commentList[name]["comment"]
     
+    #
+    # Build IsCommentCorrect
+    # Make an dictionary {"userId" : True/False}
+    #
+    def testComment(self):
+        # Check commentList is filled
+        for i in range(1, self.idCount + 1):
+            idIter = self.idList[i]
+            # Emoji should be in the last of comment
+            containedEmojis = emojis.get(self.getComment(idIter)[-1])
+            if len(containedEmojis) != 0:
+                self.IsCommentCorrect[idIter] = True
+            else:
+                self.IsCommentCorrect[idIter] = False
+
 
 def get_comment_item(commentBlock):
     try:
@@ -136,24 +232,61 @@ def get_comment_item(commentBlock):
     except TypeError:
         return None
 
-# ===globalVariable===
-# 0. Constant 
-NAVER_LOGIN_PAGE = f"https://nid.naver.com/nidlogin.login?mode=form&url=https%3A%2F%2Fwww.naver.com"
-# ====================
+#
+# swapNumber -> for option
+#
+# ====
+#
+# Check if option is in valid range
+#
+# ====
+#
+def get_article_number(articleBlock, option = None):
+
+    def swapNumber(string):
+        numberBold = "𝟏 𝟐 𝟑 𝟒 𝟓 𝟔 𝟕 𝟖 𝟗 𝟎".split()
+        number = "1 2 3 4 5 6 7 8 9 0".split()
+
+        for i in range(10):
+            string.replace(numberBold[i], number[i])
+
+        return string
+
+    mileGift = "날이 좋아서 마일 나눔"
+
+    text = articleBlock.find("a").text.strip()
+    number = articleBlock.find("div", {"class":"inner_number"}).string
+    
+    if option:
+        if mileGift in text:
+            if option is int(swapNumber(text.split()[-1])):
+                return number
+    else:
+        if mileGift in text:
+            return number
+
+    return None
 
 def main():
     driver = Driver()
-    driver.login("borengdev", "aszx1245")
     driver.get()
     driver.loadPage()
+    #import code
+    #code.interact(local=locals())
     driver.inspectPage()
     driver.readComment()
+    driver.testComment()
+    
+    f1 = open("outTrue.txt", "w")
+    f2 = open("outFalse.txt", "w")
+    for i in range(1, driver.idCount+1):
+        _id = driver.idList[i]
+        (f1 if driver.IsCommentCorrect[_id] else f2).\
+                write("%s : %s\n"%(_id, driver.getComment(_id)))
+    f1.close()
+    f2.close()
 
-    for i in len(driver.idCount):
-        print(driver.idList[i], driver.getComment(driver.idList[i]))
 
-    import code
-    code.interact(local=locals())
     return
 
 if __name__ == "__main__":

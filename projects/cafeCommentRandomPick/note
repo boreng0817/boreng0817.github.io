@@ -41,3 +41,28 @@ CommentItem.comment_area.comment_thumb
 									
 									
 app.Article.article_wrap.ArticleContentBox.article_container.CommentBox.ArticlePaginate									
+
+
+#app > div > div > div.ArticleContentBox > div.article_container > div.CommentBox > div.ArticlePaginate > button:nth-child(2)
+#app > div > div > div.ArticleContentBox > div.article_container > div.CommentBox > div.ArticlePaginate > button:nth-child(3)
+#app > div > div > div.ArticleContentBox > div.article_container > div.CommentBox > div.ArticlePaginate > button:nth-child(4)
+#app > div > div > div.ArticleContentBox > div.article_container > div.CommentBox > div.ArticlePaginate > button:nth-child(5)
+
+
+#app > div > div > div.RelatedArticles > div.paginate_area > div > button:nth-child(2)
+
+
+#\39 6680974
+#\39 6680974
+#cih96681134
+//*[@id="96680974"]
+
+self.driver.switch_to.frame("cafe_main")
+self.driver.switch_to.frame("innerNetwork")
+self.html = self.driver.page_source
+self.soup = BeautifulSoup(self.html, "html.parser")
+self.soup.find_all("td", {'class' : 'td_article'})
+
+temp.find("div", {"class":"inner_number"}).string
+temp.find("a").text.strip()
+
