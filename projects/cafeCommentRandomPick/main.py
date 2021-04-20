@@ -163,10 +163,11 @@ class Driver:
 
             for temp in self.soup.find('ul', {'class' : 'comment_list'}):
                 ret = get_comment_item(temp)
+                ######FOR_DEBUGGGING#####
                 if testBool:
                     testBool = False
                     print(ret)
-
+                #########################
                 # if temp tag is comment
                 # or user id is already in commentList
                 if (ret is None) or ret[0] in list(self.idList.values()):
