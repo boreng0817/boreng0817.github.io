@@ -275,13 +275,25 @@ def get_article_number(articleBlock, option = None):
     return None
 
 def main():
+    import timeit
+    counter = 0
     driver = Driver()
     driver.get()
     driver.loadPage()
     #import code
     #code.interact(local=locals())
     driver.inspectPage()
-    driver.readComment()
+    
+    while True:
+        start = timeit.default_timer()
+        driver.readComment()
+        counter += 1
+
+        if counter % 100 is 0:
+            # save comment
+            continue
+        print('Time: ', timeit.default_timer() - start)
+            
     driver.testComment()
     
     f1 = open("outTrue.txt", "w")
