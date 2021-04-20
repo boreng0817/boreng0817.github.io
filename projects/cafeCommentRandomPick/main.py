@@ -10,12 +10,29 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
 
+#############################
+# First test of the program #
+#############################
+# 1. If there are no comment in article,
+#    Program can't read any further comment
+# 
+# 2. When there're less than 100 comments,
+#    it can't press button in self.readComment()
+#
+#
+#
+
+
+
+
 # ===globalVariable===
 # 0. Constant 
 NAVER_LOGIN_PAGE = f"https://nid.naver.com/nidlogin.login?mode=form&url=https%3A%2F%2Fwww.naver.com"
 NAVER_USER_PAGE = f"https://cafe.naver.com/CafeMemberNetworkView.nhn?m=view&clubid=14062859&memberid=syeon7706#"
 DEV_ID = "borengdev"
 DEV_PASSWORD = "aszx1245"
+
+TIME_INTERVAL = 20
 # ====================
 
 
@@ -59,6 +76,17 @@ class Driver:
         except TimeoutException:
             print("Timeout happened no page load")
 
+    def getCafeMain(self):
+        self.driver.get(self.url)
+        
+        try:
+            self.wait = WebDriverWait(self.driver, 3)
+            self.wait.until(
+             EC.presence_of_element_located((By.NAME, 'cafe_main'))
+                    )
+        except TimeoutException:
+            print("Timeout happened no page load")
+        self.driver.switch_to.frame("cafe_main")
     #
     # Find latest article's url for choosing winner 
     #  Additional Implementation
@@ -167,7 +195,8 @@ class Driver:
                 ######FOR_DEBUGGGING#####
                 if testBool:
                     testBool = False
-                    print(ret)
+                    if ret is not None:
+                        print(ret[0])
                 #########################
                 # if temp tag is comment
                 # or user id is already in commentList
@@ -192,7 +221,6 @@ class Driver:
             
             if ret[0] in self.tempList:
                 counterFalse += 1
-                continue
             else:
                 counterTrue += 1
                 self.tempList.append(ret[0])
@@ -222,6 +250,21 @@ class Driver:
                 self.IsCommentCorrect[idIter] = True
             else:
                 self.IsCommentCorrect[idIter] = False
+
+    def dumComment(self, arg):
+        f = open("dump%d.txt"%arg, "w")
+        
+        string = "id:%s$nickName:%s$comment:%s$time:%s"
+        for i in range(1, self.idCount + 1):
+            _id = self.idList[i]
+            nickName = self.commentList[_id]['nickName']
+            comment = self.commentList[_id]['comment']
+            time = self.commentList[_id]['time']
+            f.write(string%(_id, nickName, comment, time) + '\n')
+
+        f.close()
+
+        
 
 
 def get_comment_item(commentBlock):
@@ -286,14 +329,15 @@ def main():
     
     while True:
         start = timeit.default_timer()
+        driver.getCafeMain()
         driver.readComment()
-        counter += 1
 
-        if counter % 100 is 0:
-            # save comment
-            continue
-        print('Time: ', timeit.default_timer() - start)
+        if counter % TIME_INTERVAL is 0:
+            driver.dumComment(int(counter/TIME_INTERVAL))
+        print('[%d]Time: '%counter, timeit.default_timer() - start)
+        print('\n\n\n\n\n')
             
+        counter += 1
     driver.testComment()
     
     f1 = open("outTrue.txt", "w")
