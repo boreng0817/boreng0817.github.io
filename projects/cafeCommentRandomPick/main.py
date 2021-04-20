@@ -142,6 +142,7 @@ class Driver:
                             "div.ArticlePaginate > button:nth-child(%d)"
         cssSelectorUl = "#app > div > div > div.ArticleContentBox > " +\
                         "div.article_container > div.CommentBox > ul"
+        self.tempList = []
         for i in range(1, self.pageNum + 1):
             testBool = True #
             #self.driver.find_element_by_css_selector(cssSelector%(i+1)).click()
@@ -180,21 +181,26 @@ class Driver:
         return
 
     def testUl(self):
-        counter = 0
-        MAX_MATCH = 3
+        counterFalse = 0
+        counterTrue = 0
+        MAX_MATCH = 10
         for temp in self.soup.find('ul', {'class' : 'comment_list'}):
             ret = get_comment_item(temp)
 
             if (ret is None):
                 continue
             
-            if ret[0] in list(self.idList.values()):
-                counter += 1
+            if ret[0] in self.tempList:
+                counterFalse += 1
                 continue
             else:
-                return True
-            if counter == MAX_MATCH:
+                counterTrue += 1
+                self.tempList.append(ret[0])
+
+            if counterFalse == MAX_MATCH:
                 return False
+            if counterTrue == MAX_MATCH:
+                return True
 
     #
     # Get comment of id = name
