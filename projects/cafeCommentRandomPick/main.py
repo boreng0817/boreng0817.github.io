@@ -19,9 +19,18 @@ from selenium.webdriver.common.by import By
 # 2. When there're less than 100 comments,
 #    it can't press button in self.readComment()
 #
+# 3. False negative -> easy to add to True list
 #
+# 4. # of emoji -> should be 1
 #
-
+# 5. Comment count should be dynamic
+#
+# 6. when testing comment page,
+#    MAX_COUNT should be dynamic -> min(comment.count % 100, 10)
+#
+# 7. Consider duplicate user -> forbid duplicate
+#
+# 8. get winner's cafe page
 
 
 
@@ -56,6 +65,7 @@ class Driver:
         self.IsCommentCorrect = {}
         self.idCount = 0
         self.pageNum = 1
+        self.commentNum = 0
         self.soup = None
         self.html = None
         self.wait = None
@@ -114,7 +124,8 @@ class Driver:
             if self.articleNumber:
                 break
 
-        return f"https://cafe.naver.com/ghdi58/%s"%self.articleNumber
+        #return f"https://cafe.naver.com/ghdi58/%s"%self.articleNumber
+        return f"https://cafe.naver.com/ghdi58/3932356"
     #
     # login with "user_id" and "password" to naver.com
     #  Implementation done
@@ -154,8 +165,8 @@ class Driver:
     #  1. Check the driver is in right page
     #
     def inspectPage(self):
-        commentNum = int(self.soup.find('strong', {'class':'num'}).string)
-        self.pageNum = int(math.ceil(commentNum/100))
+        self.commentNum = int(self.soup.find('strong', {'class':'num'}).string)
+        self.pageNum = int(math.ceil(self.commentNum/100))
 
     #
     # Naive approach for reading comment from article 
@@ -170,24 +181,25 @@ class Driver:
                             "div.ArticlePaginate > button:nth-child(%d)"
         cssSelectorUl = "#app > div > div > div.ArticleContentBox > " +\
                         "div.article_container > div.CommentBox > ul"
-        self.tempList = []
+        self.tempList = [["temp"]*5]
+        self.inspectPage()
         for i in range(1, self.pageNum + 1):
             testBool = True #
-            #self.driver.find_element_by_css_selector(cssSelector%(i+1)).click()
-            self.wait = WebDriverWait(self.driver, 3)
-            try:
-                self.wait.until(EC.element_to_be_clickable(
-                (By.CSS_SELECTOR, cssSelectorButton%(i+1)))
-                ).click() 
-            except TimeoutException:
-                print("Time out exception")
+            if self.pageNum != 1:
+                self.wait = WebDriverWait(self.driver, 3)
+                try:
+                    self.wait.until(EC.element_to_be_clickable(
+                    (By.CSS_SELECTOR, cssSelectorButton%(i+1)))
+                    ).click() 
+                except TimeoutException:
+                    print("Time out exception at readComment")
 
             # Check if UL is properly loaded
             while True:
                 self.html = self.driver.page_source
                 self.soup = BeautifulSoup(self.html, "html.parser")
                 # User should be new to list
-                if self.testUl():
+                if self.testUl(i):
                     break
 
             for temp in self.soup.find('ul', {'class' : 'comment_list'}):
@@ -209,26 +221,47 @@ class Driver:
 
         return
 
-    def testUl(self):
+    #Start at here
+    def testUl(self, pageIndex):
         counterFalse = 0
         counterTrue = 0
-        MAX_MATCH = 10
+        count = 0
+        tempList = []
+        MAX_MATCH = 0
+
+
+        if self.commentNum % 100 == 0:
+            MAX_MATCH = len(self.tempList[pageIndex - 1])
+        else:
+            MAX_MATCH = min(self.commentNum % 100, 
+                len(self.tempList[pageIndex-1]))
+
+        if self.soup.find('ul', {'class' : 'comment_list'}) is None:
+            return False
         for temp in self.soup.find('ul', {'class' : 'comment_list'}):
             ret = get_comment_item(temp)
 
             if (ret is None):
                 continue
             
-            if ret[0] in self.tempList:
+            
+            tempList.append(ret[0])
+            
+            
+            print(self.tempList)
+            print(count, MAX_MATCH)
+            if ret[0] == self.tempList[pageIndex - 1][count]:
                 counterFalse += 1
             else:
                 counterTrue += 1
-                self.tempList.append(ret[0])
+            count += 1
 
-            if counterFalse == MAX_MATCH:
-                return False
-            if counterTrue == MAX_MATCH:
-                return True
+            if count == MAX_MATCH:
+                if counterFalse < counterTrue:
+                    self.tempList.append(tempList)
+                    return True
+                else:
+                    return False
 
     #
     # Get comment of id = name
@@ -325,7 +358,6 @@ def main():
     driver.loadPage()
     #import code
     #code.interact(local=locals())
-    driver.inspectPage()
     
     while True:
         start = timeit.default_timer()
