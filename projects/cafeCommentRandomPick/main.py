@@ -124,8 +124,7 @@ class Driver:
             if self.articleNumber:
                 break
 
-        #return f"https://cafe.naver.com/ghdi58/%s"%self.articleNumber
-        return f"https://cafe.naver.com/ghdi58/3932356"
+        return f"https://cafe.naver.com/ghdi58/%s"%self.articleNumber
     #
     # login with "user_id" and "password" to naver.com
     #  Implementation done
@@ -335,7 +334,7 @@ def get_article_number(articleBlock, option = None):
 
         return string
 
-    mileGift = "날이 좋아서 마일 나눔"
+    mileGift = "마일 나눔"
 
     text = articleBlock.find("a").text.strip()
     number = articleBlock.find("div", {"class":"inner_number"}).string
