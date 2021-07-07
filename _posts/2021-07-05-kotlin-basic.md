@@ -17,7 +17,7 @@ fun main() {
 Code above is a simple function that prints "Hello, Kotlin!" as an output.
 I learned Kotlin with various demo in [developer.android.com](https://developer.android.com/codelabs/kotlin-bootcamp-welcome#0) 
 I'll cover lesson 1 through lesson 3.
-![fig1](TIL/2021-07-05/fig1.PNG) 
+![fig1](boreng0817.githubio/asset/TIL/2021-07-05/fig1.PNG) 
 
 ---
 
