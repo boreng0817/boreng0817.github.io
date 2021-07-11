@@ -21,8 +21,10 @@ I'll cover lesson 1 through lesson 3.
 
 ---
 
-<h3>Lesson 1: Get started</h3>
+<h3><span style="color:DarkGreen">Lesson 1: Get started</span></h3>
 
+<details>
+<summary><h4>1.0 Introduction to kotlin</h4></summary>
 In this lesson, we learn about the language **Kotlin** and install environment for the Kotlin.
 
 
@@ -32,12 +34,14 @@ It has special property that you can use **Kotlin** with java. (e.g calling Java
 The course suggest me to use intelliJ IDEA, but I used andriod studio's Kotlin REPL for codelab.
 
 You can use **Tool > Kotlin > Kotlin REPL** to execute Kotlin REPL in your andriod studio.
+</details> 
 
 ---
 
-<h3>Lesson 2: Kotlin basics</h3>
+<h3><span style="color:DarkGreen">Lesson 2: Kotlin basics</span></h3>
 
-<h4>2.0 Operators and types</h4>
+<details>
+<summary><h4>2.0 Operators and types</h4></summary>
 
 For more readability, you can use _ (underscore) in number
 
@@ -61,7 +65,7 @@ val aquarium = 1
 aquarium = 2 // error : val cannot be reassigned
 ```
 
-You can use " and ' for making String in **Kotlin**. <br> 
+You can use " for making String in **Kotlin**. <br> 
 You can replace a variable's value in some Strings with ```$ variable``` <br>
 You can concatenate strings with ```+``` operation. <br>
 
@@ -71,10 +75,12 @@ val numOfPlants = 12
 "I have $numOfFish fish" + " and $numOfPlants plants"
 // --> res: kotlin.String = I have 5 fish and 12 plants
 ``` 
+</details> 
 
 ---- 
 
-<h4>2.1 Compare Conditions and Booleans</h4>
+<details>
+<summary><h4>2.1 Compare Conditions and Booleans</h4></summary>
 
 Like other programming language, **Kotlin** has booleans and boolean operators like ```<```, ```==```, ```>```, ```!=```, ```<=```, ```>=```.
 
@@ -113,10 +119,11 @@ when (numberOfFish) {
     else -> println("That's a lot of fish")
 }
 ``` 
+</details> 
 
 ---- 
-
-<h4>2.2 Learn about nullability</h4> 
+<details>
+<summary><h4>2.2 Learn about nullability</h4></summary> 
 
 In **Kotlin**, there's non-nullable variables and nullable variables. <br> 
 Literally, non-nullable variables can't be null. They make error when they are null. <br>
@@ -174,5 +181,55 @@ val len = s!!.length
 
 // throws NullPointerExceptions is s is null
 ```
+</details> 
 
+---- 
+
+<details>
+    <summary><h4>2.3 Arrays, Lists, and Loops</h4></summary>
+
+    You can make list with ```listOf``` and ```mutableListOf```. 
+    List that is made with ```listOf``` can't be changed. It's immutable. But you can change a list made with ```mutableListOf``` 
+
+    ```kotlin 
+    val school = listOf("mackerel", "trout", "halibut")
+    println(school)
+
+    // --> [mackerel, trout, halibut]
+
+    val myList = mutableListOf("tuna", "salmon", "shark") 
+    myList.remove("tuna")
+
+    // --> kotlin.Boolean = true
+
+    println(myList)
+
+    // --> [salmon, shark]
+
+    myList[1] = "Baby shark"
+    println(myList)
+
+    // --> [salmon, Baby shark]
+    ``` 
+
+
+    Note that ```val``` and ```var``` work the same as before. <br>
+    You can't reassign value if you use ```val```. <br>
+
+
+    ```kotlin
+
+    val list1 = listOf("element1", "element2")
+    list1 = listOf("element3", "element4")
+    // error: val cannot be reassigned
+    // list1 = listOf("element3", "element4")
+
+    var list2 = listOf("element1", "element2")
+    list2 = listOf("element3", "element4") // Ok
+    ``` 
+
+    You can make array with ```arrayOf```.<br>
+    Element of array made with ```arrayOf``` can be anytype but not null
+
+</details>
 
