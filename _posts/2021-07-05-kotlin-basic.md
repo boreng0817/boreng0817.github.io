@@ -43,13 +43,8 @@ You can use **Tool > Kotlin > Kotlin REPL** to execute Kotlin REPL in your andri
 
 <h3><span style="color:DarkGreen">Lesson 2: Kotlin basics</span></h3>
 
-<details>
-
-<summary>
-
-<h4>2.0 Operators and types</h4>
-
-</summary>
+<details><summary><h4>2.0 Operators and types</h4></summary>
+<p>
 
 For more readability, you can use _ (underscore) in number
 
@@ -84,17 +79,13 @@ val numOfPlants = 12
 // --> res: kotlin.String = I have 5 fish and 12 plants
 ``` 
 
+</p>
 </details> 
 
 ---- 
 
-<details>
-
-<summary>
-
-<h4>2.1 Compare Conditions and Booleans</h4>
-
-</summary>
+<details><summary><h4>2.1 Compare Conditions and Booleans</h4></summary>
+<p>
 
 Like other programming language, **Kotlin** has booleans and boolean operators like ```<```, ```==```, ```>```, ```!=```, ```<=```, ```>=```.
 
@@ -134,17 +125,13 @@ when (numberOfFish) {
 }
 ``` 
 
+</p>
 </details> 
 
 ---- 
 
-<details>
-
-<summary>
-
-<h4>2.2 Learn about nullability</h4>
-
-</summary> 
+<details><summary><h4>2.2 Learn about nullability</h4></summary> 
+<p>
 
 In **Kotlin**, there's non-nullable variables and nullable variables. <br> 
 Literally, non-nullable variables can't be null. They make error when they are null. <br>
@@ -203,17 +190,13 @@ val len = s!!.length
 // throws NullPointerExceptions is s is null
 ```
 
+</p>
 </details> 
 
 ---- 
 
-<details>
-
-    <summary>
-    
-    <h4>2.3 Arrays, Lists, and Loops</h4>
-    
-    </summary>
+<details><summary><h4>2.3 Arrays, Lists, and Loops</h4></summary>
+<p>
 
     You can make list with ```listOf``` and ```mutableListOf```. 
     List that is made with ```listOf``` can't be changed. It's immutable. But you can change a list made with ```mutableListOf``` 
@@ -258,5 +241,6 @@ val len = s!!.length
     You can make array with ```arrayOf```.<br>
     Element of array made with ```arrayOf``` can be anytype but not null
 
+</p>
 </details>
 
