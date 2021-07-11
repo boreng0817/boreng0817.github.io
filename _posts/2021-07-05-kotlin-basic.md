@@ -24,7 +24,13 @@ I'll cover lesson 1 through lesson 3.
 <h3><span style="color:DarkGreen">Lesson 1: Get started</span></h3>
 
 <details>
-<summary><h4>1.0 Introduction to kotlin</h4></summary>
+
+<summary>
+
+<h4>1.0 Introduction to kotlin</h4>
+
+</summary>
+
 In this lesson, we learn about the language **Kotlin** and install environment for the Kotlin.
 
 
@@ -34,6 +40,7 @@ It has special property that you can use **Kotlin** with java. (e.g calling Java
 The course suggest me to use intelliJ IDEA, but I used andriod studio's Kotlin REPL for codelab.
 
 You can use **Tool > Kotlin > Kotlin REPL** to execute Kotlin REPL in your andriod studio.
+
 </details> 
 
 ---
@@ -41,7 +48,12 @@ You can use **Tool > Kotlin > Kotlin REPL** to execute Kotlin REPL in your andri
 <h3><span style="color:DarkGreen">Lesson 2: Kotlin basics</span></h3>
 
 <details>
-<summary><h4>2.0 Operators and types</h4></summary>
+
+<summary>
+
+<h4>2.0 Operators and types</h4>
+
+</summary>
 
 For more readability, you can use _ (underscore) in number
 
@@ -75,12 +87,18 @@ val numOfPlants = 12
 "I have $numOfFish fish" + " and $numOfPlants plants"
 // --> res: kotlin.String = I have 5 fish and 12 plants
 ``` 
+
 </details> 
 
 ---- 
 
 <details>
-<summary><h4>2.1 Compare Conditions and Booleans</h4></summary>
+
+<summary>
+
+<h4>2.1 Compare Conditions and Booleans</h4>
+
+</summary>
 
 Like other programming language, **Kotlin** has booleans and boolean operators like ```<```, ```==```, ```>```, ```!=```, ```<=```, ```>=```.
 
@@ -119,11 +137,18 @@ when (numberOfFish) {
     else -> println("That's a lot of fish")
 }
 ``` 
+
 </details> 
 
 ---- 
+
 <details>
-<summary><h4>2.2 Learn about nullability</h4></summary> 
+
+<summary>
+
+<h4>2.2 Learn about nullability</h4>
+
+</summary> 
 
 In **Kotlin**, there's non-nullable variables and nullable variables. <br> 
 Literally, non-nullable variables can't be null. They make error when they are null. <br>
@@ -181,12 +206,18 @@ val len = s!!.length
 
 // throws NullPointerExceptions is s is null
 ```
+
 </details> 
 
 ---- 
 
 <details>
-    <summary><h4>2.3 Arrays, Lists, and Loops</h4></summary>
+
+    <summary>
+    
+    <h4>2.3 Arrays, Lists, and Loops</h4>
+    
+    </summary>
 
     You can make list with ```listOf``` and ```mutableListOf```. 
     List that is made with ```listOf``` can't be changed. It's immutable. But you can change a list made with ```mutableListOf``` 
