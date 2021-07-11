@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "TIL 2021 July 6th" 
+title: "Kotlin with examples" 
 date: 2021-07-06 03:18:55 -0700
 categories: kotlin 
 ---
@@ -23,13 +23,8 @@ I'll cover lesson 1 through lesson 3.
 
 <h3><span style="color:DarkGreen">Lesson 1: Get started</span></h3>
 
-<details>
-
-<summary>
-
-<h4>1.0 Introduction to kotlin</h4>
-
-</summary>
+<details><summary><h4>1.0 Introduction to kotlin</h4></summary>
+<p>
 
 In this lesson, we learn about the language **Kotlin** and install environment for the Kotlin.
 
@@ -41,6 +36,7 @@ The course suggest me to use intelliJ IDEA, but I used andriod studio's Kotlin R
 
 You can use **Tool > Kotlin > Kotlin REPL** to execute Kotlin REPL in your andriod studio.
 
+</p>
 </details> 
 
 ---
