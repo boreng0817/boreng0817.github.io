@@ -23,8 +23,7 @@ I'll cover lesson 1 through lesson 3.
 
 <h3><span style="color:DarkGreen">Lesson 1: Get started</span></h3>
 
-<details><summary><h4>1.0 Introduction to kotlin</h4></summary>
-<p>
+<details><summary><h4>1.0 Introduction to kotlin</h4></summary><p>
 
 In this lesson, we learn about the language **Kotlin** and install environment for the Kotlin.
 
@@ -36,8 +35,7 @@ The course suggest me to use intelliJ IDEA, but I used andriod studio's Kotlin R
 
 You can use **Tool > Kotlin > Kotlin REPL** to execute Kotlin REPL in your andriod studio.
 
-</p>
-</details> 
+</p></details> 
 
 ---
 
