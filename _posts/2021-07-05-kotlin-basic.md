@@ -196,49 +196,52 @@ val len = s!!.length
 <details><summary><h4>2.3 Arrays, Lists, and Loops</h4></summary>
 <p>
 
-    You can make list with ```listOf``` and ```mutableListOf```. 
-    List that is made with ```listOf``` can't be changed. It's immutable. But you can change a list made with ```mutableListOf``` 
+You can make list with ```listOf``` and ```mutableListOf```. 
+List that is made with ```listOf``` can't be changed. It's immutable. But you can change a list made with ```mutableListOf``` 
 
-    ```kotlin 
-    val school = listOf("mackerel", "trout", "halibut")
-    println(school)
+```kotlin 
+val school = listOf("mackerel", "trout", "halibut")
+println(school)
 
-    // --> [mackerel, trout, halibut]
+// --> [mackerel, trout, halibut]
 
-    val myList = mutableListOf("tuna", "salmon", "shark") 
-    myList.remove("tuna")
+val myList = mutableListOf("tuna", "salmon", "shark") 
+myList.remove("tuna")
 
-    // --> kotlin.Boolean = true
+// --> kotlin.Boolean = true
 
-    println(myList)
+println(myList)
 
-    // --> [salmon, shark]
+// --> [salmon, shark]
 
-    myList[1] = "Baby shark"
-    println(myList)
+myList[1] = "Baby shark"
+println(myList)
 
-    // --> [salmon, Baby shark]
-    ``` 
-
-
-    Note that ```val``` and ```var``` work the same as before. <br>
-    You can't reassign value if you use ```val```. <br>
+// --> [salmon, Baby shark]
+``` 
 
 
-    ```kotlin
+Note that ```val``` and ```var``` work the same as before. <br>
+You can't reassign value if you use ```val```. <br>
 
-    val list1 = listOf("element1", "element2")
-    list1 = listOf("element3", "element4")
-    // error: val cannot be reassigned
-    // list1 = listOf("element3", "element4")
 
-    var list2 = listOf("element1", "element2")
-    list2 = listOf("element3", "element4") // Ok
-    ``` 
+```kotlin
 
-    You can make array with ```arrayOf```.<br>
-    Element of array made with ```arrayOf``` can be anytype but not null
+val list1 = listOf("element1", "element2")
+list1 = listOf("element3", "element4")
+// error: val cannot be reassigned
+// list1 = listOf("element3", "element4")
+
+var list2 = listOf("element1", "element2")
+list2 = listOf("element3", "element4") // Ok
+``` 
+
+You can make array with ```arrayOf```.<br>
+Element of array made with ```arrayOf``` can be anytype but not null
 
 </p>
-</details>
+</details> 
+
+--- 
+
 
