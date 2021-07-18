@@ -830,3 +830,215 @@ TO-DO
 
 --- 
 
+<h3><span style="color:DarkGreen">Lesson 4: Classes and Objects</span></h3> 
+
+<details><summary><h4>4.0 Create a class</h4></summary> 
+<p>
+
+You can make classes with `class` keyword.
+
+```kotlin
+class Aquarium {
+    var width: Int = 20
+    var heigth: Int = 40
+    var length: Int = 100
+}
+``` 
+
+In kotlin, `getters` and `setters` are automactically created. You can get and set variables in `Aquarium` class like `Aquarium.width = 10`, `println(Aquarium.width)`
+
+Note that declaring properties of class with `val` and `var` is different. Once you declare variable with `val`, probably every instance of the class have the same value(unless it can be initialized with parameter).
+
+You can add some methods inside a class.
+
+```kotlin
+class Aquarium {
+    var width: Int = 20
+    var heigth: Int = 40
+    var length: Int = 100
+
+    fun printSize() {
+        println("Width: $width cm " +
+                "Length: $length cm "+
+                "Height: $height cm ")
+    }
+}
+
+
+val aquarium = Aquarium()
+aquarium.printSize()
+
+/*
+    Width: 20 cm Length: 100 cm Height: 40 cm
+*/
+``` 
+
+</p>
+</details>
+
+--- 
+
+<details><summary><h4>4.1 Add class constructors</h4></summary> 
+<p>
+</details>
+
+In some programming language, the constructor is defined by creating a method named the same as class name.<br>
+In kotlin, constructor is defined in class declaration.
+
+```kotlin
+class Aquarium(length: Int = 100, width: Int = 20, height: Int = 40) {
+   // Dimensions in cm
+   var length: Int = length
+   var width: Int = width
+   var height: Int = height
+...
+}
+``` 
+
+You can simplify constructor with `var` and `val`. For property definition inside `{}` curly bracket, you can write them in `()` bracket.
+
+```kotlin
+class Aquarium(var length: Int = 100, var width: Int = 20, var height: Int = 40) {
+...
+}
+``` 
+
+These are some example of constructor of `Aquarium`.<br>
+Note that all properties in `Aquarium` have default value.
+
+<codeBlock name="init"></codeBlock>
+```kotlin
+val aquarium1 = Aquarium()
+aquarium1.printSize()
+
+// default height and length
+val aquarium2 = Aquarium(width = 25)
+aquarium2.printSize()
+
+// default width
+val aquarium3 = Aquarium(height = 35, length = 110)
+aquarium3.printSize()
+
+// everything custom
+val aquarium4 = Aquarium(width = 25, height = 35, length = 110)
+aquarium4.printSize()
+
+/*
+    Width: 20 cm Length: 100 cm Height: 40 cm 
+    Width: 25 cm Length: 100 cm Height: 40 cm 
+    Width: 20 cm Length: 110 cm Height: 35 cm 
+    Width: 25 cm Length: 110 cm Height: 35 cm 
+*/
+```
+One nice thing about kotlin constructors is that you don't have to overload for different version of constructors.
+
+In many programming language, you can do some stuffs in constructor like print some message. When you need some specific task in class' constructor, you can use `init` block. <br>
+Note that you can use multiple `init` blocks.
+
+```kotlin
+class Aquarium (var length: Int = 100, var width: Int = 20, var height: Int = 40) {
+    init {
+        println("aquarium initializing")
+    }
+    init {
+        // 1 liter = 1000 cm^3
+        println("Volume: ${width * length * height / 1000} l")
+    }
+}
+``` 
+
+```kotlin
+val aquarium1 = Aquarium()
+aquarium1.printSize()
+
+// default height and length
+val aquarium2 = Aquarium(width = 25)
+aquarium2.printSize()
+
+// default width
+val aquarium3 = Aquarium(height = 35, length = 110)
+aquarium3.printSize()
+
+// everything custom
+val aquarium4 = Aquarium(width = 25, height = 35, length = 110)
+aquarium4.printSize()
+
+/*
+    aquarium initializing
+    Volume: 80 l
+    Width: 20 cm Length: 100 cm Height: 40 cm
+    aquarium initializing
+    Volume: 100 l
+    Width: 25 cm Length: 100 cm Height: 40 cm
+    aquarium initializing
+    Volume: 77 l
+    Width: 20 cm Length: 110 cm Height: 35 cm
+    aquarium initializing
+    Volume: 96 l
+    Width: 25 cm Length: 110 cm Height: 35 cm
+*/
+```
+
+Examine the difference between this [code](#init)
+TO-DO
+
+</p>
+</details>
+
+--- 
+
+<details><summary><h4>4.2 Learn about visibility modifiers</h4></summary> 
+<p>
+</details>
+
+TO-DO
+
+</p>
+</details>
+
+--- 
+
+<details><summary><h4>4.3 Compare abstract classes and interfaces</h4></summary>
+<p>
+</details>
+
+TO-DO
+
+</p>
+</details>
+
+--- 
+
+<details><summary><h4>4.4 Use interface delegation</h4></summary> 
+<p>
+</details>
+
+TO-DO
+
+</p>
+</details>
+
+--- 
+
+<details><summary><h4>4.5 Create a data class</h4></summary> 
+<p>
+</details>
+
+TO-DO
+
+</p>
+</details>
+
+--- 
+
+<details><summary><h4>4.6 Learn about singletons, enums, and sealed classes</h4></summary> 
+<p>
+</details>
+
+TO-DO
+
+</p>
+</details>
+
+--- 
+
