@@ -880,7 +880,6 @@ aquarium.printSize()
 
 <details><summary><h4>4.1 Add class constructors</h4></summary> 
 <p>
-</details>
 
 In some programming language, the constructor is defined by creating a method named the same as class name.<br>
 In kotlin, constructor is defined in class declaration.
@@ -906,7 +905,7 @@ class Aquarium(var length: Int = 100, var width: Int = 20, var height: Int = 40)
 These are some example of constructor of `Aquarium`.<br>
 Note that all properties in `Aquarium` have default value.
 
-<codeBlock name="init"></codeBlock>
+<codeBlock href="#init"></codeBlock>
 ```kotlin
 val aquarium1 = Aquarium()
 aquarium1.printSize()
@@ -980,7 +979,65 @@ aquarium4.printSize()
 ```
 
 Examine the difference between this [code](#init)
-TO-DO
+
+Also if you need another version of constructors, you can define secondary constructor as well. <br>
+You can use `constructor` keyword for the secondary constructors.
+
+```kotlin
+class Aquarium (var length: Int = 100, var width: Int = 20, var height: Int = 40) {
+    init {
+        println("aquarium initializing")
+    }
+    init {
+        // 1 liter = 1000 cm^3
+        println("Volume: ${width * length * height / 1000} l")
+    }
+    constructor(numberOfFish: Int) : this() {
+        // 2,000 cm^3 per fish + extra room so water doesn't spill
+        val tank = numberOfFish * 2000 * 1.1
+        // calculate the height needed
+        height = (tank / (length * width)).toInt()
+    }
+}
+
+val aquarium6 = Aquarium(numberOfFish = 29)
+aquarium6.printSize()
+println("Volume: ${aquarium6.width * aquarium6.length * aquarium6.height / 1000} l")
+
+/*
+    aquarium initializing
+    Volume: 80 l
+    Width: 20 cm Length: 100 cm Height: 31 cm 
+    Volume: 62 l
+*/
+```
+
+You can add new property getter. 
+
+```kotlin
+// in Aquarium
+val volume: Int
+    get() = width * height * length / 1000 
+
+fun printSize() {
+    println("Width: $width cm " +
+            "Length: $length cm " +
+            "Height: $height cm "
+    )
+    // 1 l = 1000 cm^3
+    println("Volume: $volume l")
+}
+```
+
+Also, you can add a property setter.
+```kotlin
+// in Aquarium
+val volume: Int
+    get() = width * height * length / 1000 
+    set(value) {
+        heigth = (value * 1000) / (width * length)
+    }
+```
 
 </p>
 </details>
