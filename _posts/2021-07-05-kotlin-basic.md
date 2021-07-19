@@ -798,7 +798,6 @@ _Example will be added_
 --- 
 
 <details><summary><h4>3.5 Get started with lambdas and higher-order functions</h4></summary> 
-</details>
 <p>
 
 A lambda is an expression that makes a function. Instead of declaring a named function, you declare a function that has no name. This makes lambda expression can now be passed as data.
@@ -1046,16 +1045,210 @@ val volume: Int
 
 <details><summary><h4>4.2 Learn about visibility modifiers</h4></summary> 
 <p>
-</details>
 
-TO-DO
+Like other OOP, kotlin has visibility modifiers like `public`, `private`, etc. <br>
+Note that defualt of visibility modifier is `public` which mean if you didn't mention about visibility modifiers, variables/methods are `public`.
+* `public` visible outside the class.
+* `internal` visible within **module**. (**module** is a set of .kt files compiled together. e.g> `library`, `applications`)
+* `private` visible in that class (or source file if you are working with functions)
+* `protected` has same power with `private` but it's visible to and subclasses.
+
+If you want to read/write a member variable in your code but only readable outside the code, you can do this.
+
+```kotlin
+var volume: Int
+    get() = width * height * length / 1000
+    private set(value) {
+        height = (value * 1000) / (width * length)
+    }
+``` 
 
 </p>
 </details>
 
 --- 
 
-<details><summary><h4>4.3 Compare abstract classes and interfaces</h4></summary>
+<details><summary><h4>4.3 Learn about subclasses and inheritance</h4></summary>
+<p>
+
+Kotlin support inheritance and subclasses. 
+
+In default, kotlin's class can't be subclassed. Also they can be accessed but can't be overridden. <br>
+You need to add special keyword `open` for class to be subclassed. Also for member variables. 
+
+```kotlin
+open class Aquarium (open var length: Int = 100, open var width: Int = 20, open var height: Int = 40) {
+    open var volume: Int
+        get() = width * height * length / 1000
+        set(value) {
+            height = (value * 1000) / (width * length)
+        }
+    open val shape = "rectangle"
+    open var water: Double = 0.0
+        get() = volume * 0.9
+    fun printSize() {
+        println(shape)
+        println("Width: $width cm " +
+                "Length: $length cm " +
+                "Height: $height cm ")
+        // 1 l = 1000 cm^3
+        println("Volume: $volume l Water: $water l (${water/volume*100.0}% full)")
+    }
+}
+``` 
+
+Now, `Aquarium` class can be subclassed.
+
+Let's make a class `TowerTank`. 
+
+```kotlin
+import java.lang.Math.PI
+
+class TowerTank (override var height: Int, var diameter: Int): 
+    Aquarium(height = height, width = diameter, length = diameter) {
+    override val shape = "cylinder"
+    override var water = volume * 0.8
+    override var volume: Int
+        // ellipse area = π * r1 * r2
+        get() = (width/2 * length/2 * height / 1000 * PI).toInt()
+        set(value) {
+            height = ((value * 1000 / PI) / (width/2 * length/2)).toInt()
+        }
+
+}
+``` 
+
+Let's test and compare `Aquarium` and `TowerTank`
+
+```
+val myAquarium = Aquarium(width = 25, length = 25, height = 40)
+myAquarium.printSize()
+val myTower = TowerTank(diameter = 25, height = 40)
+myTower.printSize()
+
+/*
+    quarium initializing
+    rectangle
+    Width: 25 cm Length: 25 cm Height: 40 cm 
+    Volume: 25 l Water: 22.5 l (90.0% full)
+    aquarium initializing
+    cylinder
+    Width: 25 cm Length: 25 cm Height: 40 cm 
+    Volume: 18 l Water: 14.4 l (80.0% full)
+*/
+``` 
+
+</p>
+</details>
+
+--- 
+
+<details><summary><h4>4.4 Compare abstract classes and interfaces</h4></summary>
+<p>
+
+When you want to define common behavior or properties of related class, you can use **abstract class** and **interface**.
+
+Some notes for **absract class** and **interface**
+* **abstract class** and **interface** can't instantiated on its own.
+* **abstract classes** constructors.
+* But **interfaces** can't have any constructor logic or store any state.
+* **abstract classes** are always open. So you don't have to add `open`.
+
+`AquariumFish` is an abstract class that has common properties of fish.
+```kotlin
+abstract class AquariumFish {
+    abstract val color: String
+}
+
+class Shark: AquariumFish() {
+    override val color = "gray"
+}
+
+class Plecostomus: AquariumFish() {
+    override val color = "gold"
+}
+``` 
+
+`Shark` and `Plecostomus` are subclasses of `AquariumFish` <br>
+Let's check their `color`.
+
+```kotlin
+val shark = Shark()
+val pleco = Plecostomus()
+
+println("Shark: ${shark.color}")
+println("Plecostomus: ${pleco.color}")
+
+/*
+    Shark: gray
+    Plecostomus: gold
+*/
+```
+
+Let's add `interface` for subclasses.
+
+```kotlin
+interface FishAction {
+    fun eat()
+}
+
+class Shark: AquariumFish(), FishAction{
+    override val color = "gray"
+    override fun eat() {
+        println("hunt and eat fish")
+    }
+}
+
+class Plecostomus: AquariumFish(), FishAction{
+    override val color = "gold"
+    override fun eat() {
+        println("eat algae")
+    }
+}
+
+
+val shark = Shark()
+val pleco = Plecostomus()
+println("Shark: ${shark.color}")
+shark.eat()
+println("Plecostomus: ${pleco.color}")
+pleco.eat()
+
+/*
+    Shark: gray
+    hunt and eat fish
+    Plecostomus: gold
+    eat algae
+*/
+
+```
+
+Why does kotlin divied `abstract class` and `interface`? <br>
+Except the point that `abstract class` can have constructors but `interface` can't, `interface` and `abstract class` are very similar.
+
+Using `interface` makes your code cleaner, provide more chance for reusing code, and more readability. <br>
+Since you can only inherit a class once, you may have trouble without interface. But `interface` let you plug more functionality to your class. (Imagine human body has 2 legs and 2 arms, and head) <br>
+
+Note that you can have many functions in interface.
+```kotlin
+interface AquariumAction {
+    fun eat()
+    fun jump()
+    fun clean()
+    fun catchFish()
+    fun swim()  {
+        println("swim")
+    }
+}
+```
+
+
+
+</p>
+</details>
+
+--- 
+<details><summary><h4>4.5 Use interface delegation</h4></summary> 
 <p>
 </details>
 
@@ -1066,33 +1259,138 @@ TO-DO
 
 --- 
 
-<details><summary><h4>4.4 Use interface delegation</h4></summary> 
+<details><summary><h4>4.6 Create a data class</h4></summary> 
 <p>
-</details>
 
-TO-DO
+In kotlin, there's a data class something similar to `structure` in **C**.
+
+It's also a class, but it mainly contains data. Since it's still a object, you can add extra funcionality like printing and copying. 
+
+To make a class to data class, you should add `data` infront of `class`.
+
+```kotlin 
+data class Decoration(val rocks: String) {
+}
+
+val decoration1 = Decoration("granite")
+println(decoration1)
+
+/*
+    Decoration(rocks=granite)
+*/
+```
+
+For equality of different instance of `Decoration`, you can use either `==` and `.equals`.
+
+```kotlin
+val decoration1 = Decoration("granite")
+println(decoration1)
+
+val decoration2 = Decoration("slate")
+println(decoration2)
+
+val decoration3 = Decoration("slate")
+println(decoration3)
+
+println (decoration1.equals(decoration2))
+// same as println (decoration1 == decoration2)
+
+println (decoration3.equals(decoration2))
+// same as println (decoration3 == decoration2)
+
+/*
+Decoration(rocks=granite)
+Decoration(rocks=slate)
+Decoration(rocks=slate)
+false
+true
+*/
+
+You can acknowledge from example that if properties of data class are the same, then two instances are the same.
+
+Note that `==` and `equals()` are _structural equality_ operation. If you want to check referenctial equality, use `===`.
+
+```kotlin
+println (decoration3 == decoration2) // true
+println (decoration3 === decoration2) // false
+``` 
+
+There's a handy way to split data class into numbers variables. <br>
+If `Decoration` has 3 properties `rock`, `wood`, `diver`, you should get values like this.
+
+```kotlin
+val rock = decoration.rock
+val wood = decoration.wood
+val diver = decoration.diver
+``` 
+
+You can **destruct** `decoration` into 3 parts. we call it `destructing`.
+
+```kotlin
+val (rock, wood, diver) = decoration
+``` 
+
+If you don't need some parts of properties, use `_` for variable name. (Sometimes it called wild card)
+
+```kotlin
+val (rock, _, diver) = decoration
+```
 
 </p>
 </details>
 
 --- 
 
-<details><summary><h4>4.5 Create a data class</h4></summary> 
+<details><summary><h4>4.7 Learn about singletons, enums, and sealed classes</h4></summary> 
 <p>
-</details>
+Singleton: TO-DO
 
-TO-DO
+Kotlin supports enums, which allow you to enumerate something and refer to it by name. <br>
+Use `enum` keyword before `class`.
 
-</p>
-</details>
+```kotlin
+enum class Color(val rgb: Int) {
+   RED(0xFF0000), GREEN(0x00FF00), BLUE(0x0000FF);
+}
+``` 
 
---- 
+Enums are bit like singletons; there can be only one and for each value in enumerations. <br>
+You can get ordinal value of an enum with `ordinal` and name with `name` property.
 
-<details><summary><h4>4.6 Learn about singletons, enums, and sealed classes</h4></summary> 
-<p>
-</details>
+```kotlin
+enum class Direction(val degrees: Int) {
+    NORTH(0), SOUTH(180), EAST(90), WEST(270)
+}
 
-TO-DO
+println(Direction.EAST.name)
+println(Direction.EAST.ordinal)
+println(Direction.EAST.degrees)
+
+/*
+    EAST
+    2
+    90
+*/
+```
+
+Sealed class is bit similar to `open`, since it can be subclassed. <br>
+But big difference is that it can be only subclassed inside the file in which it's declared. <br>
+You will got error if you try to subclass the sealed class in different file.
+
+Some benefits of sealed class are that compiler knows your sealed class and subclasses. So at compile time, compiler would do extra check for you.
+
+```kotlin
+sealed class Seal
+class SeaLion : Seal()
+class Walrus : Seal()
+
+fun matchSeal(seal: Seal): String {
+   return when(seal) {
+       is Walrus -> "walrus"
+       is SeaLion -> "sea lion"
+   }
+}
+```
 
 </p>
 </details>
