@@ -130,7 +130,7 @@ fun main(args: Array<String>) {
 
 ---
 
-2789 [블랙잭](https://www.acmicpc.net/problem/2789)
+2798 [블랙잭](https://www.acmicpc.net/problem/2798)
 <details><summary>code</summary>
 
 ```kotlin
