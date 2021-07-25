@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Kotlin problem solving week3" 
+title: "Kotlin problem solving week2" 
 date: 2021-07-25 17:55:00 -0700
 categories: kotlin 
 ---
