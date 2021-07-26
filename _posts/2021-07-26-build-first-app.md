@@ -20,8 +20,8 @@ categories: app
 저는 이 튜토리얼에서 이걸 배웠습니다.
 * Android studio에서 app build하기
 * 노트북에 기기를 연결하여 앱 실행해보기
-* 반응하는 button 만들기
 * Android app을 만들기 위한 XML 이해하기
+* 반응하는 button 만들기
 * Button을 이용하여 두번째 screen (Second fragment)로 이동하기
 
 추가로
@@ -71,10 +71,55 @@ Android 4.2 이상의 핸드폰에서 개발자 모드를 통해 **USB Debugging
 
 연결에 성공했다면 기기에서 컴퓨터를 통한 디버깅을 허용하는 RSA키를 수락할지 묻는 대화상자를 표시합니다. 이를 승인하면 이제 기기에서 앱 실행을 할 수 있습니다!
 
-<h3>반응하는 button 만들기</h3>
 <h3>Android app을 만들기 위한 XML 이해하기</h3>
+
+앱의 Layout을 XML(e**X**tensible **M**arkup **L**anguage)을 이용하여 정의하였습니다.
+
+TO-DO
+
+<h3>반응하는 button 만들기</h3>
+
+```XML
+<Button
+    android:id="@+id/random_button"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="24dp"
+    android:background="@color/buttonBackground"
+    android:text="@string/next"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/textview_first" />
+```
+
 <h3>Button을 이용하여 두번째 screen (Second fragment)로 이동하기</h3>
 
+---
+
+<h2>추가로</h2>
+
+<h3>내 입맛대로 기능 구현해보기</h3>
+TO-DO
+<h3>에러 해결하기 (DEX file error)</h3>
+TO-DO
+<h3>에러에게 혼나기 (binding)</h3>
+TO-DO
+<h3>알아낸 팁(undo history)</h3>
+
+열심히 코딩을 하다가 어느순간 앱이 build가 되지 않는 상황이 오기도 합니다. (제가 광고를 앱에 추가해보려다가 DEX file error가 생겼는데, 이를 통해 해결했습니다.) <br>
+그럴 때 열심히 control-z를 연타해서 뒤로 가려니,, 이렇게 비효율적일 수가 없습니다. <br>
+
+그 때는 Android Studio의 상단 메뉴 중 **VCS > Local History > Show History**를 선택하면 작업하던 project에서 어떤 변경이 있었는지 로깅을 해둡니다. (얼마나 해두는지는 정확하게 모르겠습니다!)
+
+아래 하나의 예시를 만들어 보았습니다. fragment_first.xml 파일에서 몇가지 변경을 해보았습니다.
+1. New Change1, New Change2, New Change3, New Change4를 적었습니다.
+2. New Change5를 2줄 공백을 넣고 새로 적은 뒤에 New Change2, 4를 지웠습니다.
+
+![fig6](https://boreng0817.github.io/asset/TIL/2021-07-26/fig6.PNG)
+
+그림에서 초록색은 추가, 회색은 삭제를 의미합니다. `1번`과 `2번` 작업 사이의 시점과 현재를 비교하기 때문에 <span style="background-color:rgba(128, 128, 128, 0.5)">New Change2와 New Change4</span>는 삭제가 됐고, <span style="background-color:rgba(0, 100, 0, 0.5)">공백 2줄과 New Change5</span>는 추가가 됐습니다.
+
+Git을 사용하면 이런 경우가 있어도 branch를 옮기면 되겠지만, local에서 작업하다가 오류가 생긴 시점을 찾기가 힘들다면, 이게 도움이 될지도 모르겠네요!
 
 <details><summary>code</summary>
 </details>
